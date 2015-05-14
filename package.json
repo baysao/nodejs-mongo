@@ -1,0 +1,24 @@
+{
+  "name": "webix-mongo",
+  "version": "1.0.0",
+  "description": "Package for mongodb processing data in webix.",
+  "main": "index.js",
+  "dependencies": {
+    "mongodb": "^1.4.37",
+    "mongoskin": "^1.4.13"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/webix-hub/nodejs-mongo.git"
+  },
+  "author": "EgorLazarovich",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/webix-hub/nodejs-mongo/issues"
+  },
+  "homepage": "https://github.com/webix-hub/nodejs-mongo"
+}
