@@ -22,6 +22,14 @@ function Model() {
     };
 }
 
+/**
+ * Change data order.
+ * @param {string|number} idFrom
+ * @param {string|number} idTo
+ * @param {Object=} collectionState - data parameters.
+ * @param {string=} collectionState.field_order - for handling data ordering. Method don't work without this data.
+ * @returns {Promise}
+ */
 Model.prototype.changeOrderData = function(idFrom, idTo, collectionState) {
 
     var objFrom = null,
@@ -74,6 +82,13 @@ Model.prototype.changeOrderData = function(idFrom, idTo, collectionState) {
     });
 };
 
+/**
+ * Insert data into database.
+ * @param {Object} data - {[field_name]: [field_value], ...}
+ * @param {Object=} collectionState - data parameters.
+ * @param {string=} collectionState.field_order - for handling data ordering.
+ * @returns {Promise}
+ */
 Model.prototype.insertData = function(data, collectionState) {
     var db = _getDataCollection(this._db, collectionState),
         fieldOrder = collectionState.field_order;
@@ -109,11 +124,26 @@ Model.prototype.insertData = function(data, collectionState) {
         });
 };
 
+/**
+ * Update data by id.
+ * @param {string|number} dataId
+ * @param {Object} data - {[field_name]: [field_value], ...}
+ * @param {Object=} collectionState - data parameters.
+ * @param {string=} collectionState.field_order - for handling data ordering.
+ * @returns {Promise}
+ */
 Model.prototype.updateData = function(dataId, data, collectionState) {
     var db = _getDataCollection(this._db, collectionState);
     return db.updateByIdAsync(dataId, {$set: data});
 };
 
+/**
+ * Remove data by id.
+ * @param {string|number} dataId
+ * @param {Object=} collectionState - data parameters.
+ * @param {string=} collectionState.field_order - for handling data ordering.
+ * @returns {Promise}
+ */
 Model.prototype.removeData = function(dataId, collectionState) {
     var db = _getDataCollection(this._db, collectionState),
         fieldOrder = collectionState.field_order;
@@ -138,6 +168,12 @@ Model.prototype.removeData = function(dataId, collectionState) {
     });
 };
 
+/**
+ * Get data.
+ * @param {Object=} collectionState - data parameters.
+ * @param {string=} collectionState.field_order - for sorting by order.
+ * @returns {Promise}
+ */
 Model.prototype.getData = function(collectionState) {
     var db = _getDataCollection(this._db, collectionState),
         fieldOrder = collectionState.field_order;
