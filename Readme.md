@@ -70,10 +70,10 @@ webix_mongo.getData(details);
 
 Method returns fulfilment promise.
 
-```js
-//Common parameters
+
+
+*Common parameters*
 - details - optional, can be used to specify a custom name for "order" property for example `{field_order: "my_order"}`
-```
 
 That is it.
 
