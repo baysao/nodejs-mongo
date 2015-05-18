@@ -57,13 +57,16 @@ webix_mongo.removeData(id, details);
 ```
 
 - id - id of data which will be removed.
+- details - look below.
 
 Method returns fulfilment promise.
 
 ```js
 //Get data from database.
-webix_mongo.getData(collectionState);
+webix_mongo.getData(details);
 ```
+
+- details - look below.
 
 Method returns fulfilment promise.
 
