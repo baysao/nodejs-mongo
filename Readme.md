@@ -63,6 +63,7 @@ Method returns fulfilment promise.
 ```js
 //Get data from database.
 webix_mongo.getData(collectionState);
+```
 
 Method returns fulfilment promise.
 
