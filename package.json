@@ -4,6 +4,7 @@
   "description": "Package for mongodb processing data.",
   "main": "index.js",
   "dependencies": {
+    "bluebird": "^2.9.25",
     "mongodb": "^1.4.37",
     "mongoskin": "^1.4.13"
   },
