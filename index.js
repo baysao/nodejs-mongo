@@ -91,6 +91,7 @@ Model.prototype.changeOrderData = function(idFrom, idTo, collectionState) {
  */
 Model.prototype.insertData = function(data, collectionState) {
     var db = _getDataCollection(this._db, collectionState),
+        fieldId = collectionState.field_id,
         fieldOrder = collectionState.field_order;
 
     return new Promise(function(resolve, reject) {
@@ -117,7 +118,7 @@ Model.prototype.insertData = function(data, collectionState) {
             return db.insertAsync(data);
         }).then(function(insertedData) {
             insertedData = insertedData[0];
-            insertedData.id = insertedData._id.toString();
+            insertedData[fieldId] = insertedData._id.toString();
             delete insertedData._id;
             delete insertedData[fieldOrder];
             return insertedData;
@@ -176,6 +177,7 @@ Model.prototype.removeData = function(dataId, collectionState) {
  */
 Model.prototype.getData = function(collectionState) {
     var db = _getDataCollection(this._db, collectionState),
+        fieldId = collectionState.field_id,
         fieldOrder = collectionState.field_order;
 
     return new Promise(function(resolve, reject) {
@@ -187,7 +189,7 @@ Model.prototype.getData = function(collectionState) {
                 reject(error);
             else {
                 for(var i = 0; i < dataArray.length; i++) {
-                    dataArray[i].id = dataArray[i]._id.toString();
+                    dataArray[i][fieldId] = dataArray[i]._id.toString();
                     delete dataArray[i]._id;
                     delete dataArray[i][fieldOrder];
                 }
