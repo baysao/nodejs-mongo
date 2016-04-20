@@ -139,6 +139,19 @@ Model.prototype.updateData = function(dataId, data, collectionState) {
 };
 
 /**
+ * Replace data by id.
+ * @param {string|number} dataId
+ * @param {Object} data - {[field_name]: [field_value], ...}
+ * @param {Object=} collectionState - data parameters.
+ * @param {string=} collectionState.field_order - for handling data ordering.
+ * @returns {Promise}
+ */
+Model.prototype.replaceData = function(dataId, data, collectionState) {
+    var db = _getDataCollection(this._db, collectionState);
+    return db.updateByIdAsync(dataId, data);
+};
+
+/**
  * Remove data by id.
  * @param {string|number} dataId
  * @param {Object=} collectionState - data parameters.
