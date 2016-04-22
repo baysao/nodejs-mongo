@@ -188,44 +188,30 @@ function Model() {
  * @param {string=} collectionState.field_order - for sorting by order.
  * @returns {Promise}
  */
- Model.prototype.getData = function(collectionState) {
+ Model.prototype.getData = function(collectionState, dataId) {
     var db = _getDataCollection(this._db, collectionState),
     fieldId = collectionState.field_id,
     fieldOrder = collectionState.field_order;
+    if(dataId)
+        return db.findByIdAsync(dataId);
+    else {
+        return new Promise(function(resolve, reject) {
+            var sortObj = {};
+            sortObj[fieldOrder] = 1;
 
-    return new Promise(function(resolve, reject) {
-        var sortObj = {};
-        sortObj[fieldOrder] = 1;
-
-        db.find({}, {sort: sortObj}).toArray(function(error, dataArray) {
-            if(error)
-                reject(error);
-            else {
-                for(var i = 0; i < dataArray.length; i++) {
-                    dataArray[i][fieldId] = dataArray[i]._id.toString();
-                    delete dataArray[i]._id;
-                    delete dataArray[i][fieldOrder];
+            db.find({}, {sort: sortObj}).toArray(function(error, dataArray) {
+                if(error)
+                    reject(error);
+                else {
+                    for(var i = 0; i < dataArray.length; i++) {
+                        dataArray[i][fieldId] = dataArray[i]._id.toString();
+                        delete dataArray[i]._id;
+                        delete dataArray[i][fieldOrder];
+                    }
+                    resolve(dataArray);
                 }
-                resolve(dataArray);
-            }
+            });
         });
-    });
+    }
 };
-Model.prototype.getDataById = function(dataId, collectionState) {
-    var db = _getDataCollection(this._db, collectionState),
-    fieldId = collectionState.field_id,
-
-    return new Promise(function(resolve, reject) {
-        db.findById(dataId, function(error, data) {
-            if(error)
-                reject(error);
-            else {
-                data[fieldId] = data._id.toString();
-                delete data._id;
-                resolve(data);
-            }
-        });
-    });
-};
-
 module.exports = new Model();
