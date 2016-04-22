@@ -192,9 +192,15 @@ function Model() {
     var db = _getDataCollection(this._db, collectionState),
     fieldId = collectionState.field_id,
     fieldOrder = collectionState.field_order;
-    if(dataId)
-        return db.findByIdAsync(dataId);
-    else {
+    if(dataId) {
+       return db.findByIdAsync(dataId).then(function(data){
+          return new Promise(function(resolve, reject) {
+            data[fieldId] = data._id.toString();
+            delete data._id;
+            resolve(data);
+        })
+      }
+      else {
         return new Promise(function(resolve, reject) {
             var sortObj = {};
             sortObj[fieldOrder] = 1;
