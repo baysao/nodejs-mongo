@@ -199,25 +199,25 @@ function Model() {
             delete data._id;
             resolve(data);
         })
-      }
-      else {
-        return new Promise(function(resolve, reject) {
-            var sortObj = {};
-            sortObj[fieldOrder] = 1;
+      })
+   } else {
+    return new Promise(function(resolve, reject) {
+        var sortObj = {};
+        sortObj[fieldOrder] = 1;
 
-            db.find({}, {sort: sortObj}).toArray(function(error, dataArray) {
-                if(error)
-                    reject(error);
-                else {
-                    for(var i = 0; i < dataArray.length; i++) {
-                        dataArray[i][fieldId] = dataArray[i]._id.toString();
-                        delete dataArray[i]._id;
-                        delete dataArray[i][fieldOrder];
-                    }
-                    resolve(dataArray);
+        db.find({}, {sort: sortObj}).toArray(function(error, dataArray) {
+            if(error)
+                reject(error);
+            else {
+                for(var i = 0; i < dataArray.length; i++) {
+                    dataArray[i][fieldId] = dataArray[i]._id.toString();
+                    delete dataArray[i]._id;
+                    delete dataArray[i][fieldOrder];
                 }
-            });
+                resolve(dataArray);
+            }
         });
-    }
+    });
+}
 };
 module.exports = new Model();
