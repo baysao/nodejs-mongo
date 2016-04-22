@@ -1,6 +1,6 @@
 {
   "name": "webix-mongo",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Package for mongodb processing data.",
   "main": "index.js",
   "dependencies": {

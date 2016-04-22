@@ -1,5 +1,5 @@
 var Mongo = require("mongoskin"),
-    Promise = require("bluebird");
+Promise = require("bluebird");
 
 function _getDataCollection(db, collectionState) {
     var collection = db.collection(collectionState.handling);
@@ -30,12 +30,12 @@ function Model() {
  * @param {string=} collectionState.field_order - for handling data ordering. Method don't work without this data.
  * @returns {Promise}
  */
-Model.prototype.changeOrderData = function(idFrom, idTo, collectionState) {
+ Model.prototype.changeOrderData = function(idFrom, idTo, collectionState) {
 
     var objFrom = null,
-        objTo = null,
-        db = _getDataCollection(this._db, collectionState),
-        fieldOrder = collectionState.field_order;
+    objTo = null,
+    db = _getDataCollection(this._db, collectionState),
+    fieldOrder = collectionState.field_order;
 
     if(!fieldOrder) {
         return new Promise(function(resolve) {
@@ -89,10 +89,10 @@ Model.prototype.changeOrderData = function(idFrom, idTo, collectionState) {
  * @param {string=} collectionState.field_order - for handling data ordering.
  * @returns {Promise}
  */
-Model.prototype.insertData = function(data, collectionState) {
+ Model.prototype.insertData = function(data, collectionState) {
     var db = _getDataCollection(this._db, collectionState),
-        fieldId = collectionState.field_id,
-        fieldOrder = collectionState.field_order;
+    fieldId = collectionState.field_id,
+    fieldOrder = collectionState.field_order;
 
     return new Promise(function(resolve, reject) {
         if(fieldOrder) {
@@ -112,17 +112,17 @@ Model.prototype.insertData = function(data, collectionState) {
             resolve(null);
         }
     }).then(function(nextOrder) {
-            if(fieldOrder)
-                data[fieldOrder] = nextOrder;
+        if(fieldOrder)
+            data[fieldOrder] = nextOrder;
 
-            return db.insertAsync(data);
-        }).then(function(insertedData) {
-            insertedData = insertedData[0];
-            insertedData[fieldId] = insertedData._id.toString();
-            delete insertedData._id;
-            delete insertedData[fieldOrder];
-            return insertedData;
-        });
+        return db.insertAsync(data);
+    }).then(function(insertedData) {
+        insertedData = insertedData[0];
+        insertedData[fieldId] = insertedData._id.toString();
+        delete insertedData._id;
+        delete insertedData[fieldOrder];
+        return insertedData;
+    });
 };
 
 /**
@@ -133,7 +133,7 @@ Model.prototype.insertData = function(data, collectionState) {
  * @param {string=} collectionState.field_order - for handling data ordering.
  * @returns {Promise}
  */
-Model.prototype.updateData = function(dataId, data, collectionState) {
+ Model.prototype.updateData = function(dataId, data, collectionState) {
     var db = _getDataCollection(this._db, collectionState);
     return db.updateByIdAsync(dataId, {$set: data});
 };
@@ -146,7 +146,7 @@ Model.prototype.updateData = function(dataId, data, collectionState) {
  * @param {string=} collectionState.field_order - for handling data ordering.
  * @returns {Promise}
  */
-Model.prototype.replaceData = function(dataId, data, collectionState) {
+ Model.prototype.replaceData = function(dataId, data, collectionState) {
     var db = _getDataCollection(this._db, collectionState);
     return db.updateByIdAsync(dataId, data);
 };
@@ -158,9 +158,9 @@ Model.prototype.replaceData = function(dataId, data, collectionState) {
  * @param {string=} collectionState.field_order - for handling data ordering.
  * @returns {Promise}
  */
-Model.prototype.removeData = function(dataId, collectionState) {
+ Model.prototype.removeData = function(dataId, collectionState) {
     var db = _getDataCollection(this._db, collectionState),
-        fieldOrder = collectionState.field_order;
+    fieldOrder = collectionState.field_order;
 
     return db.findByIdAsync(dataId).then(function(data) {
         return new Promise(function(resolve, reject) {
@@ -188,10 +188,10 @@ Model.prototype.removeData = function(dataId, collectionState) {
  * @param {string=} collectionState.field_order - for sorting by order.
  * @returns {Promise}
  */
-Model.prototype.getData = function(collectionState) {
+ Model.prototype.getData = function(collectionState) {
     var db = _getDataCollection(this._db, collectionState),
-        fieldId = collectionState.field_id,
-        fieldOrder = collectionState.field_order;
+    fieldId = collectionState.field_id,
+    fieldOrder = collectionState.field_order;
 
     return new Promise(function(resolve, reject) {
         var sortObj = {};
@@ -207,6 +207,22 @@ Model.prototype.getData = function(collectionState) {
                     delete dataArray[i][fieldOrder];
                 }
                 resolve(dataArray);
+            }
+        });
+    });
+};
+Model.prototype.getDataById = function(dataId, collectionState) {
+    var db = _getDataCollection(this._db, collectionState),
+    fieldId = collectionState.field_id,
+
+    return new Promise(function(resolve, reject) {
+        db.findById(dataId, function(error, data) {
+            if(error)
+                reject(error);
+            else {
+                data[fieldId] = data._id.toString();
+                delete data._id;
+                resolve(data);
             }
         });
     });
