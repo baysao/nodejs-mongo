@@ -195,6 +195,8 @@ function Model() {
     if(!filters) filters = {};
     if(dataId) {
          filters['_id'] = Mongo.helper.toObjectID(dataId);
+         console.log('filters:');
+         console.log(filters);
      return db.findOne(filters, function(err, data){
       return new Promise(function(resolve, reject) {
         data[fieldId] = data._id.toString();
