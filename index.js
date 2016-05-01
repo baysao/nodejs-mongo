@@ -188,24 +188,26 @@ function Model() {
  * @param {string=} collectionState.field_order - for sorting by order.
  * @returns {Promise}
  */
- Model.prototype.getData = function(collectionState, dataId) {
+ Model.prototype.getData = function(collectionState, dataId, filters) {
     var db = _getDataCollection(this._db, collectionState),
     fieldId = collectionState.field_id,
     fieldOrder = collectionState.field_order;
+    if(!filters) filters = {};
     if(dataId) {
-       return db.findByIdAsync(dataId).then(function(data){
-          return new Promise(function(resolve, reject) {
-            data[fieldId] = data._id.toString();
-            delete data._id;
-            resolve(data);
-        })
-      })
-   } else {
+         filters['_id'] = Mongo.helper.toObjectID(dataId);
+     return db.fineOne(filters, function(err, data){
+      return new Promise(function(resolve, reject) {
+        data[fieldId] = data._id.toString();
+        delete data._id;
+        resolve(data);
+    })
+  })
+ } else {
     return new Promise(function(resolve, reject) {
         var sortObj = {};
         sortObj[fieldOrder] = 1;
 
-        db.find({}, {sort: sortObj}).toArray(function(error, dataArray) {
+        db.find(filters, {sort: sortObj}).toArray(function(error, dataArray) {
             if(error)
                 reject(error);
             else {
