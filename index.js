@@ -209,9 +209,9 @@ function Model() {
         var sortObj = {};
         sortObj[fieldOrder] = 1;
         if(dataId) {
-         filters['_id'] = Mongo.ObjectID(dataId);
-     }
-     db.find(filters, {sort: sortObj}).toArray(function(error, dataArray) {
+           filters['_id'] = Mongo.ObjectID(dataId);
+       }
+       db.find(filters, {sort: sortObj}).toArray(function(error, dataArray) {
         if(error)
             reject(error);
         else {
@@ -221,13 +221,14 @@ function Model() {
                 delete dataArray[i][fieldOrder];
             }
             if(dataId) {
-                resolve(dataArray[0]);
+                var data =  dataArray.length > 0 ? dataArray[0] : {};
+                resolve(data);
             }
             else
                 resolve(dataArray);
         }
     });
- });
+   });
 // }
 };
 module.exports = new Model();
