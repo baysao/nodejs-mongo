@@ -189,6 +189,10 @@ function Model() {
  * @returns {Promise}
  */
  Model.prototype.getData = function(collectionState, dataId, filters) {
+    console.log('getData');
+    console.log('filters:');
+    console.log(filters);
+
     var db = _getDataCollection(this._db, collectionState),
     fieldId = collectionState.field_id,
     fieldOrder = collectionState.field_order;
