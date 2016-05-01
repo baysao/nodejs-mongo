@@ -193,35 +193,41 @@ function Model() {
     fieldId = collectionState.field_id,
     fieldOrder = collectionState.field_order;
     if(!filters) filters = {};
-    if(dataId) {
-         filters['_id'] = Mongo.ObjectID(dataId);
-         console.log('filters:');
-         console.log(filters);
-     return db.findOne(filters, function(err, data){
-      return new Promise(function(resolve, reject) {
-        data[fieldId] = data._id.toString();
-        delete data._id;
-        resolve(data);
-    })
-  })
- } else {
+ //    if(dataId) {
+ //         filters['_id'] = Mongo.ObjectID(dataId);
+ //         console.log('filters:');
+ //         console.log(filters);
+ //     return db.findOne(filters, function(err, data){
+ //      return new Promise(function(resolve, reject) {
+ //        data[fieldId] = data._id.toString();
+ //        delete data._id;
+ //        resolve(data);
+ //    })
+ //  })
+ // } else {
     return new Promise(function(resolve, reject) {
         var sortObj = {};
         sortObj[fieldOrder] = 1;
-
-        db.find(filters, {sort: sortObj}).toArray(function(error, dataArray) {
-            if(error)
-                reject(error);
-            else {
-                for(var i = 0; i < dataArray.length; i++) {
-                    dataArray[i][fieldId] = dataArray[i]._id.toString();
-                    delete dataArray[i]._id;
-                    delete dataArray[i][fieldOrder];
-                }
-                resolve(dataArray);
+        if(dataId) {
+         filters['_id'] = Mongo.ObjectID(dataId);
+     }
+     db.find(filters, {sort: sortObj}).toArray(function(error, dataArray) {
+        if(error)
+            reject(error);
+        else {
+            for(var i = 0; i < dataArray.length; i++) {
+                dataArray[i][fieldId] = dataArray[i]._id.toString();
+                delete dataArray[i]._id;
+                delete dataArray[i][fieldOrder];
             }
-        });
+            if(dataId) {
+                resolve(dataArray[0]);
+            }
+            else
+                resolve(dataArray);
+        }
     });
-}
+ });
+// }
 };
 module.exports = new Model();
