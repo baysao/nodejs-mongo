@@ -194,7 +194,7 @@ function Model() {
     fieldOrder = collectionState.field_order;
     if(!filters) filters = {};
     if(dataId) {
-         filters['_id'] = Mongo.helper.toObjectID(dataId);
+         filters['_id'] = Mongo.ObjectID(dataId);
          console.log('filters:');
          console.log(filters);
      return db.findOne(filters, function(err, data){
