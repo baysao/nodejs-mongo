@@ -189,26 +189,11 @@ function Model() {
  * @returns {Promise}
  */
  Model.prototype.getData = function(collectionState, dataId, filters) {
-    console.log('getData');
-    console.log('filters:');
-    console.log(filters);
 
     var db = _getDataCollection(this._db, collectionState),
     fieldId = collectionState.field_id,
     fieldOrder = collectionState.field_order;
     if(!filters) filters = {};
- //    if(dataId) {
- //         filters['_id'] = Mongo.ObjectID(dataId);
- //         console.log('filters:');
- //         console.log(filters);
- //     return db.findOne(filters, function(err, data){
- //      return new Promise(function(resolve, reject) {
- //        data[fieldId] = data._id.toString();
- //        delete data._id;
- //        resolve(data);
- //    })
- //  })
- // } else {
     return new Promise(function(resolve, reject) {
         var sortObj = {};
         sortObj[fieldOrder] = 1;
@@ -233,6 +218,5 @@ function Model() {
         }
     });
    });
-// }
 };
 module.exports = new Model();
