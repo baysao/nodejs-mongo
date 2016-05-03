@@ -209,8 +209,6 @@ function Model() {
                 delete dataArray[i]._id;
                 delete dataArray[i][fieldOrder];
             }
-            console.log('dataArray:');
-            console.log(dataArray);
             if(dataId) {
                 var data =  dataArray.length > 0 ? dataArray[0] : {};
                 resolve(data);
